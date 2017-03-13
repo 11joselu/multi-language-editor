@@ -255,7 +255,9 @@
   }
 
   .properties {
-    overflow-x: auto;
+    overflow: auto;
+    max-height: 700px;
+    max-width: 100%;
   }
 
   .properties--button {
