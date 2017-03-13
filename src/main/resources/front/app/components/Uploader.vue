@@ -6,7 +6,7 @@
 
 
    <div class="uploader text-center" v-if="!isLoading">
-     <h2>File Upload <span>ZIP</span> file</h2>
+     <h2>Upload <span>ZIP</span> file</h2>
      <p class="lead"></p>
 
      <form  @submit.prevent="sendZipfile" role="form"  enctype="multipart/form-data" class="uploader--form">
@@ -47,6 +47,19 @@ export default {
   name: 'uploader',
   components: {
     Loading
+  },
+  beforeRouteEnter (to, from, next) {
+    var properties = JSON.parse(localStorage.getItem('properties'));
+
+    next(vm => {
+
+      if (properties) {
+        vm.$router.push({name: "properties", params:  {properties: properties}});
+
+        return
+      }
+
+    })
   },
   data () {
     return {

@@ -73,17 +73,20 @@
     },
 
     beforeRouteEnter (to, from, next) {
-      var properties = to.params.properties
+      var properties = to.params.properties || JSON.parse(localStorage.getItem('properties'));
 
       next(vm => {
+
         if (!properties) {
           vm.$router.go(-1)
           return
         }
 
-        vm.properties = properties
+        vm.properties = properties;
 
         vm.languages = Object.keys(properties[0].languages)
+
+        localStorage.removeItem('properties');
       })
     },
     data () {
@@ -240,7 +243,7 @@
             link.click();
           })
           .catch((err) => {
-            console.log(err)
+            localStorage.setItem('properties', JSON.stringify(this.properties));
           })
       }
     }
@@ -282,6 +285,7 @@
     display: block;
     width: 100%;
     padding: .25em;
+    min-height: 1em;
   }
 
   .properties--table td span:focus, .properties--table td span:active{
