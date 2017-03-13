@@ -58,15 +58,16 @@ export default {
   methods: {
     onFileChange (e) {
       var files = e.target.files || e.dataTransfer.files;
-      this.filename = files[0].name
+      if (files[0]) {
+        this.filename = files[0].name
+        var ext = this.getFileExtension(this.filename);
 
-      var ext = this.getFileExtension(this.filename);
-
-      if (ext[0] != 'zip') {
-        this.filename = ''
-        this.error = true
-      } else {
-        this.error = false
+        if (ext[0] != 'zip') {
+          this.filename = ''
+          this.error = true
+        } else {
+          this.error = false
+        }
       }
     },
 
@@ -88,10 +89,9 @@ export default {
       }
 
       this.$http.post('/upload', data, opts)
-        .then((response) => {
-          this.data1 = response.data
+        .then( (response) => {
           this.isLoading = false;
-          this.$router.push({name: "properties", params:  {properties: response.data }});
+          this.$router.push({name: "properties", params:  {properties: response.data.data }});
         })
         .catch(() => {
           this.isLoading = false;

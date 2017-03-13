@@ -1,10 +1,15 @@
 package org.talayos.api;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.InvalidMediaTypeException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.talayos.api.entities.ZipEntity;
 import org.talayos.bean.Translate;
 import org.talayos.util.FileUtils;
 
@@ -28,40 +33,41 @@ public class ZipController {
     private FileUtils fileUtils;
 
     @PostMapping("/upload")
-    public List<Translate> singleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+    public ResponseEntity<ZipEntity> singleFileUpload(@RequestParam("file") MultipartFile file,
+                                   RedirectAttributes redirectAttributes) throws IOException, FileUploadBase.InvalidContentTypeException, InvalidMediaTypeException {
 
         List<Translate> translates = null;
 
         if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-
-            return translates;
+            throw new FileUploadBase.FileUploadIOException();
         }
 
-        try {
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            filePath = UPLOADED_FOLDER + "/" + file.getOriginalFilename();
-            Path path = Paths.get(filePath);
-            Files.write(path, bytes);
-            translates = fileUtils.generateTranslatesByZip(filePath);
+        byte[] bytes = file.getBytes();
+        filePath = UPLOADED_FOLDER + "/" + file.getOriginalFilename();
+        Path path = Paths.get(filePath);
+        Files.write(path, bytes);
+        translates = fileUtils.generateTranslatesByZip(filePath);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ZipEntity zipEntity = new ZipEntity();
+        zipEntity.setMessage("");
+        zipEntity.setData(translates);
+        zipEntity.setStatusCode(HttpStatus.OK.value());
 
-        return translates;
+        ResponseEntity<ZipEntity> responseEntity = new ResponseEntity<>(zipEntity,
+                HttpStatus.OK);
+
+
+        return responseEntity;
     }
 
     @PostMapping("/generate")
-    public void test(@RequestBody ArrayList<Translate> translates, @RequestParam("languages") String languages, HttpServletResponse response) throws IOException {
+    public void generateZipFile(@RequestBody ArrayList<Translate> translates, @RequestParam("languages") String languages, HttpServletResponse response) throws IOException {
         String[] langs = StringEscapeUtils.escapeJava(languages).split(",");
         Collections.sort(translates);
         ByteArrayOutputStream baos = fileUtils.getTranslateUtils().writeTranslatesIntoZip(langs, translates);
 
         Date date = new Date() ;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm") ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm") ;
         String filename = "generated-" + dateFormat.format(date) +".zip";
 
         // the response variable is just a standard HttpServletResponse

@@ -2,6 +2,7 @@ package org.talayos.util;
 
 
 import lombok.Data;
+import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.talayos.bean.Translate;
@@ -107,18 +108,11 @@ public class FileUtils {
      * @param path
      * @return
      */
-    public ZipFile readZip (String path) {
-        ZipFile zf = null;
-        try {
+    public ZipFile readZip (String path) throws IOException, FileUploadBase.InvalidContentTypeException {
+        ZipFile zf = new ZipFile(path);
 
-            zf = new ZipFile(path);
-
-            if (!hasValidFiles(zf)) {
-                zf = null;
-            }
-
-        } catch (IOException io) {
-            io.printStackTrace();
+        if (!hasValidFiles(zf)) {
+            throw new FileUploadBase.InvalidContentTypeException();
         }
 
         return zf;
@@ -129,48 +123,42 @@ public class FileUtils {
      * @param path
      * @return
      */
-    public List<Translate> generateTranslatesByZip(String path) {
+    public List<Translate> generateTranslatesByZip(String path) throws IOException, FileUploadBase.InvalidContentTypeException {
         ZipFile zf;
         List<Translate> result = new ArrayList<>();
 
-        try {
+        zf = readZip(path);
 
-            zf = readZip(path);
+        Enumeration entries = zf.entries();
+        ArrayList<String> availableLanguages = availableLanguagesFromZip(zf);
 
-            Enumeration entries = zf.entries();
-            ArrayList<String> availableLanguages = availableLanguagesFromZip(zf);
+        while(entries.hasMoreElements()) {
+            ZipEntry ze = (ZipEntry) entries.nextElement();
+            BufferedReader br = new BufferedReader(new InputStreamReader(zf.getInputStream(ze)));
 
-            while(entries.hasMoreElements()) {
-                ZipEntry ze = (ZipEntry) entries.nextElement();
-                BufferedReader br = new BufferedReader(new InputStreamReader(zf.getInputStream(ze)));
+            Properties prop = new Properties();
+            prop.load(new InputStreamReader(zf.getInputStream(ze), UTF8));
 
-                Properties prop = new Properties();
-                prop.load(new InputStreamReader(zf.getInputStream(ze), UTF8));
+            String lang = getLanguageFromPropertyFile(ze.getName());
 
-                String lang = getLanguageFromPropertyFile(ze.getName());
+            Enumeration<?> e = prop.propertyNames();
 
-                Enumeration<?> e = prop.propertyNames();
+            while (e.hasMoreElements()) {
+                String key = (String) e.nextElement();
+                String value = prop.getProperty(key);
 
-                while (e.hasMoreElements()) {
-                    String key = (String) e.nextElement();
-                    String value = prop.getProperty(key);
-
-                    if (!alreadyExistsProperty(result, key)) {
-                        result.add(translateUtils.createTranslateByProperty(key, value, lang, availableLanguages));
-                    } else {
-                        translateUtils.addValueIntoTranslate(result, key, value, lang);
-                    }
+                if (!alreadyExistsProperty(result, key)) {
+                    result.add(translateUtils.createTranslateByProperty(key, value, lang, availableLanguages));
+                } else {
+                    translateUtils.addValueIntoTranslate(result, key, value, lang);
                 }
-
-                br.close();
-
             }
 
+            br.close();
 
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+
 
         Collections.sort(result);
 
@@ -183,12 +171,8 @@ public class FileUtils {
      * @param baos
      * @param path
      */
-    public void writeZipFile(ByteArrayOutputStream baos, String path) {
-        try {
-            FileOutputStream fos = new FileOutputStream (new File(path));
-            baos.writeTo(fos);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+    public void writeZipFile(ByteArrayOutputStream baos, String path) throws IOException {
+        FileOutputStream fos = new FileOutputStream (new File(path));
+        baos.writeTo(fos);
     }
 }

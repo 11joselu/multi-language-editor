@@ -14,7 +14,7 @@ lib/
 
 multi-language-editor.log
 src/main/resources/static
-
+outputTest.zip
 npm-debug.log
 
 ### IntelliJ IDEA ###

@@ -1,5 +1,6 @@
 package org.talayos.unit;
 
+import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,21 +39,28 @@ public class FileUtilsTest {
     }
 
 
+    @Test(expected = IOException.class)
+    public void testReadZipExceptionHandler() throws IOException, FileUploadBase.InvalidContentTypeException {
+        fileUtils.readZip("error.txt");
+    }
+
+
+    @Test(expected = FileUploadBase.InvalidContentTypeException.class)
+    public void testHasInvalidFiles() throws IOException, FileUploadBase.InvalidContentTypeException {
+        ZipFile zipOne = fileUtils.readZip(getPath(ZIP_FILE));
+        Assert.assertTrue(fileUtils.hasValidFiles(zipOne));
+        ZipFile zipTwo = fileUtils.readZip(getPath("invalid_zip.zip"));
+        Assert.assertFalse(fileUtils.hasValidFiles(zipTwo));
+    }
+
     @Test
-    public void testReadZip(){
+    public void testReadZip() throws IOException, FileUploadBase.InvalidContentTypeException {
         ZipFile result = fileUtils.readZip(getPath(ZIP_FILE));
         Assert.assertNotNull(result);
         Assert.assertTrue(result.size() > 0);
         Assert.assertTrue(result.getName().endsWith(ZIP_FILE));
     }
 
-    @Test
-    public void testHasInvalidFiles() {
-        ZipFile zipOne = fileUtils.readZip(getPath(ZIP_FILE));
-        Assert.assertTrue(fileUtils.hasValidFiles(zipOne));
-        ZipFile zipTwo = fileUtils.readZip(getPath("invalid_zip.zip"));
-        Assert.assertFalse(fileUtils.hasValidFiles(zipTwo));
-    }
 
     @Test
     public void testGetLanguageFromPropertyFile() {
@@ -64,7 +72,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void testAvailableLanguagesFromZip() {
+    public void testAvailableLanguagesFromZip() throws IOException, FileUploadBase.InvalidContentTypeException {
         ZipFile result = fileUtils.readZip(getPath(ZIP_FILE));
         ArrayList<String> languages = fileUtils.availableLanguagesFromZip(result);
         ArrayList<String> expected = new ArrayList<>();
@@ -82,26 +90,25 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void testReadPropertyFilesInZip(){
+    public void testReadPropertyFilesInZip() throws IOException, FileUploadBase.InvalidContentTypeException {
         List<Translate> translates = fileUtils.generateTranslatesByZip(getPath(ZIP_FILE));
-
     }
 
 
     @Test
     public void testWriteZip() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        fileUtils.writeZipFile(baos, "ficheritoraulito.zip");
+        fileUtils.writeZipFile(baos, "outputTest.zip");
     }
 
     @Test
-    public void testWritePropertyFilesInZip()  {
+    public void testWritePropertyFilesIntoZip() throws IOException, FileUploadBase.InvalidContentTypeException {
         List<Translate> translates = fileUtils.generateTranslatesByZip(getPath(ZIP_FILE));
 
         String[] languages = {"es", "en"};
 
         ByteArrayOutputStream baos = fileUtils.getTranslateUtils().writeTranslatesIntoZip(languages, translates);
 
-        fileUtils.writeZipFile(baos, "ficheritoraulito.zip");
+        fileUtils.writeZipFile(baos, "outputTest.zip");
     }
 }

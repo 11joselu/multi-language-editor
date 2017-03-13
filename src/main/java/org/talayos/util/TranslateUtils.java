@@ -49,32 +49,29 @@ public class TranslateUtils {
         return result;
     }
 
-    public ByteArrayOutputStream writeTranslatesIntoZip(String[] languages, List<Translate> translates)  {
+    public ByteArrayOutputStream writeTranslatesIntoZip(String[] languages, List<Translate> translates) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         String separator = System.lineSeparator();
+        ZipOutputStream zos = new ZipOutputStream(baos, FileUtils.UTF8);
 
-        try (ZipOutputStream zos = new ZipOutputStream(baos, FileUtils.UTF8)) {
-            for (String lang : languages) {
-                String filename;
+        for (String lang : languages) {
+            String filename;
 
-                if (lang.toLowerCase().indexOf(prefix) >= 0) {
-                    filename = lang.toLowerCase() + "-" + lang.toUpperCase() + FileUtils.PROPERTY_FILE;
-                } else {
-                    filename = prefix + "." + lang.toLowerCase() + FileUtils.PROPERTY_FILE;
-                }
-
-                ZipEntry entry = new ZipEntry(filename);
-                zos.putNextEntry(entry);
-
-                for (Translate translate : translates) {
-                    String outputText = stringToUnicode(translate.getNameProperty()) + FileUtils.PROPERTY_DIVISOR + stringToUnicode(translate.getLanguages().get(lang)) + "\n";
-                    zos.write(outputText.replace("\\n", separator).getBytes());
-                }
-
-                zos.closeEntry();
+            if (lang.toLowerCase().indexOf(prefix) >= 0) {
+                filename = lang.toLowerCase() + "-" + lang.toUpperCase() + FileUtils.PROPERTY_FILE;
+            } else {
+                filename = prefix + "." + lang.toLowerCase() + FileUtils.PROPERTY_FILE;
             }
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+
+            ZipEntry entry = new ZipEntry(filename);
+            zos.putNextEntry(entry);
+
+            for (Translate translate : translates) {
+                String outputText = stringToUnicode(translate.getNameProperty()) + FileUtils.PROPERTY_DIVISOR + stringToUnicode(translate.getLanguages().get(lang)) + "\n";
+                zos.write(outputText.replace("\\n", separator).getBytes());
+            }
+
+            zos.closeEntry();
         }
 
         return baos;
