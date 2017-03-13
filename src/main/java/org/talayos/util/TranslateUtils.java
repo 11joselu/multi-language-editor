@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.talayos.bean.Translate;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,15 +54,15 @@ public class TranslateUtils {
     public ByteArrayOutputStream writeTranslatesIntoZip(String[] languages, List<Translate> translates) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         String separator = System.lineSeparator();
-        ZipOutputStream zos = new ZipOutputStream(baos, FileUtils.UTF8);
 
+        try (ZipOutputStream zos = new ZipOutputStream(baos, FileUtils.UTF8)) {
         for (String lang : languages) {
             String filename;
 
             if (lang.toLowerCase().indexOf(prefix) >= 0) {
                 filename = lang.toLowerCase() + "-" + lang.toUpperCase() + FileUtils.PROPERTY_FILE;
             } else {
-                filename = prefix + "." + lang.toLowerCase() + FileUtils.PROPERTY_FILE;
+                filename = prefix + "." + lang + FileUtils.PROPERTY_FILE;
             }
 
             ZipEntry entry = new ZipEntry(filename);
@@ -72,6 +74,9 @@ public class TranslateUtils {
             }
 
             zos.closeEntry();
+        }
+        } catch (IOException ioe) {
+            throw ioe;
         }
 
         return baos;
