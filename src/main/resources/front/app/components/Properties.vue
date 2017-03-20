@@ -34,11 +34,9 @@
         <tbody>
           <tr v-for="(property, index) in properties" :class="{ 'is-tr-selected': propertyIsEquals(property) }" :key="index">
             <td class="alternative--bg no-select pointer" @click="toggleProperty(property)">{{index}}</td>
-            <td>{{property.nameProperty}}</td>
+            <td >{{property.nameProperty}}</td>
             <td v-for="lang in languages" :class="{'is-tr-selected': isSelected(lang)}">
-              <span contenteditable="true" @keyup="changed($event, property, lang)" @blur="changed($event, property, lang)"
-                    @paste="changed($event, property, lang)" @delete="changed($event, property, lang)" @focus="changed($event, property, lang)"
-                    :class="{'is-empty': isEmptyValue(property, lang)}" :title="'property: ' + property.nameProperty + '\n - ' + lang">{{property.languages[lang]}}</span>
+              <properties-editor :lang="lang" :property="property"></properties-editor>
             </td>
             <td><i class="fa fa-trash-o fa-2x icon--delete" aria-hidden="true"
                    @click="removeProperty(property, index)"></i></td>
@@ -59,9 +57,11 @@
 </template>
 
 <script>
+
   import ModalLanguage from './modals/ModalLanguage'
   import ConfirmModal from './modals/ConfirmModal'
   import ModalProperty from './modals/ModalProperty'
+  import PropertiesEditor from './PropertiesEditor.vue'
   import * as zip from '../services/Zip'
 
   export default {
@@ -69,7 +69,8 @@
     components: {
       ModalLanguage,
       ConfirmModal,
-      ModalProperty
+      ModalProperty,
+      PropertiesEditor
     },
 
     beforeRouteEnter (to, from, next) {
@@ -84,11 +85,22 @@
 
         vm.properties = properties;
 
-        vm.languages = Object.keys(properties[0].languages)
+        vm.languages = Object.keys(properties[0].languages).sort()
 
         localStorage.removeItem('properties');
       })
     },
+
+    mounted () {
+      window.addEventListener("beforeunload", function alertLoad(e) {
+        var confirmationMessage = "If you continue, you will lose all your changes";
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+
+        return confirmationMessage;  //Webkit, Safari, Chrome
+      });
+    },
+
     data () {
       return {
         properties: undefined,
@@ -120,6 +132,7 @@
           })
 
           this.languages.push(lang)
+          this.languages.sort();
 
         }
       },
@@ -137,11 +150,6 @@
 
       isSelected(lang) {
         return this.columnsSelected.indexOf(lang) >= 0;
-      },
-
-      changed: function($event, property, lang) {
-        var text = $event.target.innerText;
-        property.languages[lang] = text;
       },
 
       removeColumn () {
@@ -181,10 +189,6 @@
       propertyIsEquals(property) {
 
         return JSON.stringify(this.propertySelected) === JSON.stringify(property);
-      },
-
-      isEmptyValue(property, lang) {
-        return property.languages[lang] === null || property.languages[lang] === "null"  ||!property.languages[lang]
       },
 
       removeProperty (property, index) {
@@ -330,7 +334,4 @@
     background: #27ae60 !important;
   }
 
-  .is-empty {
-    background-color: #fff8bb !important;
-  }
 </style>

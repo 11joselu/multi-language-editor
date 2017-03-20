@@ -60,16 +60,16 @@ public class TranslateUtils {
             String filename;
 
             if (lang.toLowerCase().indexOf(prefix) >= 0) {
-                filename = lang.toLowerCase() + "-" + lang.toUpperCase() + FileUtils.PROPERTY_FILE;
+                filename = lang.toLowerCase() + FileUtils.PROPERTY_FILE;
             } else {
-                filename = prefix + "." + lang + FileUtils.PROPERTY_FILE;
+                filename = prefix + "." + lang.toLowerCase() + FileUtils.PROPERTY_FILE;
             }
 
             ZipEntry entry = new ZipEntry(filename);
             zos.putNextEntry(entry);
 
             for (Translate translate : translates) {
-                String outputText = stringToUnicode(translate.getNameProperty()) + FileUtils.PROPERTY_DIVISOR + stringToUnicode(translate.getLanguages().get(lang)) + "\n";
+                String outputText = stringToUnicode(translate.getNameProperty()) + FileUtils.PROPERTY_DIVISOR + stringToUnicode(translate.getLanguages().get(lang).trim()) + "\n";
                 zos.write(outputText.replace("\\n", separator).getBytes());
             }
 
