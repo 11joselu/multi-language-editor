@@ -1,6 +1,6 @@
 <template>
     <span contenteditable  @paste="pasteValue" @blur="updateValue"
-          :class="{'is-empty': isEmptyValue()}">{{property.languages[lang]}}</span>
+          :class="{'is-empty': isEmptyValue()}" :inner-text.prop="property.languages[lang]"></span>
 </template>
 
 <script>
