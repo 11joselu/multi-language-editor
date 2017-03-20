@@ -1,5 +1,6 @@
 <template>
-    <span contenteditable  @blur="updateValue" :class="{'is-empty': isEmptyValue()}">{{property.languages[lang]}}</span>
+    <span contenteditable  @paste="pasteValue" @blur="updateValue"
+          :class="{'is-empty': isEmptyValue()}">{{property.languages[lang]}}</span>
 </template>
 
 <script>
@@ -7,48 +8,48 @@
     name: 'propertiesEditor',
     props: ['lang', 'property'],
     mounted() {
-      // issue https://github.com/vuejs/vue/issues/5234
-      if (this.property.languages[this.lang] === "") {
-        this.property.languages[this.lang] = '  ';
+      if (this.property.languages[this.lang].trim() === "") {
+        this.resetValue();
       }
 
     },
     methods: {
       updateValue($event) {
         $event.preventDefault();
-        this.property.languages[this.lang] = $event.target.innerText;
+        $event.stopPropagation();
+
+        if ($event.target.innerText.trim()) {
+          this.property.languages[this.lang] = $event.target.innerText;
+        }
+
+        if (this.isEmptyValue()) {
+          this.resetValue();
+        }
       },
 
       isEmptyValue() {
         return !this.property.languages[this.lang].trim()
-      }
-    }
-  }
-</script>
-
-<style>
-  .is-empty {
-    background-color: #fff8bb !important;
-  }
-</style>
-
-
-<!--
-<template>
-  <span contenteditable @input="updateValue" :class="{'is-empty': isEmptyValue()}"></span>
-</template>
-
-<script>
-  export default {
-    name: 'propertiesEditor',
-    props: ['lang', 'property'],
-    methods: {
-      updateValue($event) {
-        this.property.languages[this.lang] = $event.target.innerText;
       },
 
-      isEmptyValue() {
-        return !this.property.languages[this.lang]
+      pasteValue(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        // Get pasted data via clipboard API
+        var clipboardData = e.clipboardData || window.clipboardData;
+        var pastedData = clipboardData.getData('Text');
+        if (pastedData) {
+          this.property.languages[this.lang] = pastedData;
+        }
+
+        if (this.isEmptyValue()) {
+          this.resetValue();
+        }
+      },
+
+      resetValue() {
+        // issue https://github.com/vuejs/vue/issues/5234
+        this.property.languages[this.lang] = '  ';
       }
     }
   }
@@ -59,4 +60,3 @@
     background-color: #fff8bb !important;
   }
 </style>
--->
