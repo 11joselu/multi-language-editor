@@ -28,7 +28,7 @@
       },
 
       isEmptyValue() {
-        return !this.property.languages[this.lang].trim()
+        return !this.property.languages[this.lang].trim() || this.property.languages[this.lang].trim() === ""
       },
 
       pasteValue(e) {
@@ -58,5 +58,6 @@
 <style>
   .is-empty {
     background-color: #fff8bb !important;
+    min-height: 2em !important;
   }
 </style>

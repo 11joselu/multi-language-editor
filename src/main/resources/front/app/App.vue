@@ -26,7 +26,6 @@ export default {
 
 <style>
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,300,500);
-
 *,
 *:before,
 *:after {

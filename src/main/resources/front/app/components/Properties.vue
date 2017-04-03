@@ -245,6 +245,7 @@
           .then(zip.getZIPData)
           .then((link) => {
             link.click();
+            document.removeChild(link);
           })
           .catch((err) => {
             localStorage.setItem('properties', JSON.stringify(this.properties));

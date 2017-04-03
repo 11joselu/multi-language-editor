@@ -4,7 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
+import 'normalize.css/normalize.css'
 import 'foundation-sites/dist/css/foundation.min.css'
+
 
 Vue.use(VueResource)
 
