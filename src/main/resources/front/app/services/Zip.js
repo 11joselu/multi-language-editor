@@ -5,7 +5,9 @@ export function getZIPData(response) {
       filename = filename.replace(/"/g,"")
       return response.blob()
         .then(function(data) {
-          result.href = window.URL.createObjectURL(data);
+          var binaryData = [];
+          binaryData.push(data);
+          result.href = window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
           result.target = '_self';
           result.download = filename;
           document.body.appendChild(result);
