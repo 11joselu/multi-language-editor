@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Uploader from '../components/Uploader'
-import Properties from '../components/Properties'
+import Properties from '../components/properties/Properties'
 
 
 Vue.use(Router)

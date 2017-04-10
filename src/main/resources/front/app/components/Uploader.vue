@@ -55,6 +55,7 @@ export default {
 
       if (properties) {
         vm.$router.push({name: "properties", params:  {properties: properties}});
+        localStorage.removeItem('properties');
 
         return
       }
@@ -106,8 +107,9 @@ export default {
           this.isLoading = false;
           this.$router.push({name: "properties", params:  {properties: response.data.data }});
         })
-        .catch(() => {
+        .catch((err) => {
           this.isLoading = false;
+          throw err;
         })
     }
   }

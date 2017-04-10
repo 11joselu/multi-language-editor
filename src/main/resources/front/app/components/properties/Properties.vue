@@ -58,11 +58,11 @@
 
 <script>
 
-  import ModalLanguage from './modals/ModalLanguage'
-  import ConfirmModal from './modals/ConfirmModal'
-  import ModalProperty from './modals/ModalProperty'
+  import ModalLanguage from '../modals/ModalLanguage'
+  import ConfirmModal from '../modals/ConfirmModal'
+  import ModalProperty from '../modals/ModalProperty'
   import PropertiesEditor from './PropertiesEditor.vue'
-  import * as zip from '../services/Zip'
+  import * as zip from '../../services/Zip'
 
   export default {
     name: 'properties',
@@ -249,6 +249,7 @@
           })
           .catch((err) => {
             localStorage.setItem('properties', JSON.stringify(this.properties));
+            throw err;
           })
       }
     }
