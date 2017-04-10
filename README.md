@@ -30,6 +30,23 @@ git clone https://github.com/11joselu/multi-language-editor.git
  
  htttp:localhost:9080/
  
+ #### Development
+  
+ ```bash
+ $ cd multi-language-editor
+ ```
+ 
+  
+ ```bash
+ $ cd src/main/resources/front
+ $ npm i
+ $ npm run dev
+
+ ```
+ Go to
+ 
+ htttp:localhost:8080/
+
 # Contribute
 
 ## Team members

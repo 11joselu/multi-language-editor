@@ -48,20 +48,6 @@ export default {
   components: {
     Loading
   },
-  beforeRouteEnter (to, from, next) {
-    var properties = JSON.parse(localStorage.getItem('properties'));
-
-    next(vm => {
-
-      if (properties) {
-        vm.$router.push({name: "properties", params:  {properties: properties}});
-        localStorage.removeItem('properties');
-
-        return
-      }
-
-    })
-  },
   data () {
     return {
       filename: '',

@@ -74,7 +74,7 @@
     },
 
     beforeRouteEnter (to, from, next) {
-      var properties = to.params.properties || JSON.parse(localStorage.getItem('properties'));
+      var properties = to.params.properties;
 
       next(vm => {
 
@@ -248,7 +248,6 @@
             document.removeChild(link);
           })
           .catch((err) => {
-            localStorage.setItem('properties', JSON.stringify(this.properties));
             throw err;
           })
       }
