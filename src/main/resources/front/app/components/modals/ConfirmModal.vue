@@ -6,7 +6,7 @@
           <p>Are you sure that you want to delete?</p>
           <div class="modal-footer text-right">
               <button class="button secondary" @click="close(false)">Cancel</button>
-              <button class="button" @click="close(true)">Remove</button>
+              <button class="button active--button" @click="close(true)">Remove</button>
           </div>
         </div>
       </div>

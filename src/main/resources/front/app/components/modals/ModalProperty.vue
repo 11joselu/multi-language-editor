@@ -23,7 +23,7 @@
           </form>
 
           <div class="modal-footer text-right">
-              <button class="button" @click="addProperty" :disabled="!field.name">Add property</button>
+              <button class="button active--button" @click="addProperty" :disabled="!field.name">Add property</button>
           </div>
         </div>
       </div>

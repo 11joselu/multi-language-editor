@@ -29,7 +29,7 @@
             </form>
 
             <div class="modal-footer text-right">
-                <button class="button" @click="addToArray" :disabled="!this.field.lang">
+                <button class="button active--button" @click="addToArray" :disabled="!this.field.lang">
                   Add new language
                 </button>
             </div>
