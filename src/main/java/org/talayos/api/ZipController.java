@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "properties")
 public class ZipController {
     private static String UPLOADED_FOLDER = System.getProperty("java.io.tmpdir");
     private String filePath = "";

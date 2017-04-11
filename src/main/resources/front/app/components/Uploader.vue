@@ -17,7 +17,7 @@
          <i class="fa fa-upload fa-3x uploader--form--icon" aria-hidden="true"></i>
         </div>
 
-        <span class="button">Select a file...</span>
+        <span class="button active--button">Select a file...</span>
       </label>
       <input type="file" id="exampleFileUpload" class="show-for-sr" @change="onFileChange" accept=".zip">
 
@@ -88,7 +88,7 @@ export default {
         }
       }
 
-      this.$http.post('/upload', data, opts)
+      this.$http.post('/properties/upload', data, opts)
         .then( (response) => {
           this.isLoading = false;
           this.$router.push({name: "properties", params:  {properties: response.data.data }});

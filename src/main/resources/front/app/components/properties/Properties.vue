@@ -1,21 +1,16 @@
 <template>
   <div v-if="properties && properties.length > 0">
-    <div class="row">
-      <div class="large-12 columns text-right properties--button">
-        <button class="button success" @click="downloadZipFile">Download as ZIP</button>
-      </div>
-    </div>
     <div class="text-right properties--button row">
       <div class="small-6 large-6 columns text-left">
-        <button class="button secondary" @click="showPropertyModal = true">Add new property</button>
-        <button class="button" @click="showModal = true">Add new language</button>
+        <button class="button active--button" @click="showPropertyModal = true">New <strong>Property</strong></button>
+        <button class="button active--button" @click="showModal = true">New <strong>Language</strong></button>
       </div>
       <div class="small-6 large-6 columns">
         <button id="show-modal" class="button alert" :disabled="columnsSelected.length == 0"
                 @click="activeDeleteButton=true">Delete Columns
         </button>
+        <button class="button success" @click="downloadZipFile">Download as ZIP</button>
       </div>
-
     </div>
 
 
@@ -233,7 +228,7 @@
       },
 
       downloadZipFile () {
-        this.$http.post('/generate', this.properties, {
+        this.$http.post('/properties/generate', this.properties, {
           params:  {
             languages: this.languages.join(',')
           },
@@ -245,7 +240,7 @@
           .then(zip.getZIPData)
           .then((link) => {
             link.click();
-            document.removeChild(link);
+            document.body.removeChild(link);
           })
           .catch((err) => {
             throw err;
@@ -274,6 +269,7 @@
 
   .properties--table {
     box-shadow: 0px 1px 2px #e2e2e2;
+    padding: 1em;
   }
 
   .properties--table th {
@@ -294,7 +290,7 @@
   }
 
   .properties--table td span:focus, .properties--table td span:active{
-    border: 1px solid #358f5e;
+    border: 1px solid #2c3e50;
   }
 
   .alternative--bg {
@@ -316,7 +312,7 @@
   }
 
   .header--selectable:hover {
-    border: 1px solid #358f5e;
+    border: 1px solid #2c3e50;
   }
 
   .icon--delete {

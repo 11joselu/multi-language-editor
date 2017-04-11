@@ -28,11 +28,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/generate': {
-        target: 'http://localhost:9080',
-        changeOrigin: true,
-      },
-      '/upload': {
+      '/properties': {
         target: 'http://localhost:9080',
         changeOrigin: true,
       }

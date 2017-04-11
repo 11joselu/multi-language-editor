@@ -12,6 +12,10 @@ Vue.use(VueResource)
 
 Vue.config.productionTip = false
 
+Vue.filter('searchFilter', function (value, search) {
+  return value;
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
