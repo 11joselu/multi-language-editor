@@ -64,7 +64,6 @@ public class ZipController {
     @PostMapping("/generate")
     public void generateZipFile(@RequestBody ArrayList<Translate> translates, @RequestParam("languages") String languages, HttpServletResponse response) throws IOException {
         String[] langs = StringEscapeUtils.escapeJava(languages).split(",");
-        Collections.sort(translates);
         ByteArrayOutputStream baos = fileUtils.getTranslateUtils().writeTranslatesIntoZip(langs, translates);
 
         Date date = new Date() ;

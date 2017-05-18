@@ -59,10 +59,10 @@ public class TranslateUtils {
         for (String lang : languages) {
             String filename;
 
-            if (lang.toLowerCase().indexOf(prefix) >= 0) {
-                filename = lang.toLowerCase() + FileUtils.PROPERTY_FILE;
+            if (lang.toLowerCase().contains(prefix)) {
+                filename = lang + FileUtils.PROPERTY_FILE;
             } else {
-                filename = prefix + "." + lang.toLowerCase() + FileUtils.PROPERTY_FILE;
+                filename = prefix + "_" + lang.toLowerCase() + FileUtils.PROPERTY_FILE;
             }
 
             ZipEntry entry = new ZipEntry(filename);

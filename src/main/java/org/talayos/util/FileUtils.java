@@ -159,9 +159,6 @@ public class FileUtils {
         }
 
 
-
-        Collections.sort(result);
-
         return result;
     }
 

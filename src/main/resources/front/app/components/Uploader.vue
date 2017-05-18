@@ -22,7 +22,7 @@
       <input type="file" id="exampleFileUpload" class="show-for-sr" @change="onFileChange" accept=".zip">
 
       <div v-if="error">
-        Please select and <strong>ZIP</strong> file...
+        Something went wrong, please contact to the best <strong>Frontend Developer :)</strong> to solve this issue.
       </div>
 
       <div v-if="filename">
@@ -64,9 +64,6 @@ export default {
 
         if (ext[0] != 'zip') {
           this.filename = ''
-          this.error = true
-        } else {
-          this.error = false
         }
       }
     },
@@ -92,9 +89,11 @@ export default {
         .then( (response) => {
           this.isLoading = false;
           this.$router.push({name: "properties", params:  {properties: response.data.data }});
+          this.error = true;
         })
         .catch((err) => {
           this.isLoading = false;
+          this.error = false;
           throw err;
         })
     }

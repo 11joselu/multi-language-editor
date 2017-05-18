@@ -202,12 +202,6 @@
         }
 
         this.properties.push(newProperty)
-
-        this.properties.sort((propA, propB) => {
-          if (propA.nameProperty.toUpperCase() > propB.nameProperty.toUpperCase()) return 1;
-          if (propA.nameProperty.toUpperCase() < propB.nameProperty.toUpperCase()) return -1;
-          return 0;
-        });
       },
 
       confirmModal (isConfirmed) {
