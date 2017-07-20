@@ -136,7 +136,7 @@ public class FileUtils {
             ZipEntry ze = (ZipEntry) entries.nextElement();
             BufferedReader br = new BufferedReader(new InputStreamReader(zf.getInputStream(ze)));
 
-            Properties prop = new Properties();
+            OrderedProperties prop = new OrderedProperties();
             prop.load(new InputStreamReader(zf.getInputStream(ze), UTF8));
 
             String lang = getLanguageFromPropertyFile(ze.getName());
