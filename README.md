@@ -58,6 +58,7 @@ git clone https://github.com/11joselu/multi-language-editor.git
 * Java
 * Springboot
 * Vue.js 2.x
+* Axios
 
 ## The MIT License (MIT)
    
