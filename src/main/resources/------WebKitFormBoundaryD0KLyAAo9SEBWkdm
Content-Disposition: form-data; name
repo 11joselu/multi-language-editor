@@ -1,0 +1,97 @@
+undefined="application.properties__endpoints.enabled"
+
+true
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__endpoints.enabled"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__endpoints.actuator.enabled"
+
+true
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__endpoints.actuator.enabled"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__logging.file"
+
+multi-language-editor.log
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__logging.file"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__logging.level.org.talayos"
+
+DEBUG
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__logging.level.org.talayos"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__logging.level.root"
+
+ERROR
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__logging.level.root"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__logging.level.org.springframework"
+
+INFO
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__logging.level.org.springframework"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__server.port"
+
+9080
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__server.port"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__spring.http.multipart.max-file-size"
+
+10MB
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__spring.http.multipart.max-file-size"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__spring.http.multipart.max-request-size"
+
+10MB
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__spring.http.multipart.max-request-size"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__multi.language.editor.prefix"
+
+openppm
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__multi.language.editor.prefix"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__test"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__test"
+
+true
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="application.properties__value"
+
+
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm
+Content-Disposition: form-data; name="test.properties__value"
+
+new
+------WebKitFormBoundaryD0KLyAAo9SEBWkdm--
+
