@@ -235,10 +235,14 @@
           .then((link) => {
             link.click();
             document.body.removeChild(link);
+            localStorage.removeItem('properties');
           })
           .catch((err) => {
+            localStorage.setItem('properties', JSON.stringify(this.properties));
+            localStorage.setItem('languages', JSON.stringify(this.languages.join(',')));
+
             throw err;
-          })
+          });
       }
     }
 

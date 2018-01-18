@@ -9,7 +9,7 @@
      <h2>Upload <span>ZIP</span> file</h2>
      <p class="lead"></p>
 
-     <form  @submit.prevent="sendZipfile" role="form"  enctype="multipart/form-data" class="uploader--form">
+     <form  @submit.prevent="sendZipfile" role="form"  enctype="multipart/form-data" class="uploader--form" v-if="!showRestore">
 
       <label for="exampleFileUpload">
 
@@ -35,6 +35,7 @@
     </form>
    </div>
 
+    <restore-modal v-if="showRestore" @close="closeEvt" @restore="restoreEvt"></restore-modal>
   </div>
 
 
@@ -42,19 +43,32 @@
 
 <script>
 import Loading from './Loading'
+import RestoreModal from "./ConfirmModal";
 
 export default {
   name: 'uploader',
   components: {
+    RestoreModal,
     Loading
   },
   data () {
     return {
       filename: '',
       isLoading: false,
-      error: false
+      error: false,
+      showRestore: false,
+      properties: []
     }
   },
+
+  mounted() {
+    this.properties = JSON.parse(localStorage.getItem('properties')) || [];
+
+    if (this.properties.length > 0) {
+      this.showRestore = true;
+    }
+  },
+
   methods: {
     onFileChange (e) {
       var files = e.target.files || e.dataTransfer.files;
@@ -66,6 +80,14 @@ export default {
           this.filename = ''
         }
       }
+    },
+
+    closeEvt() {
+      this.showRestore = false;
+    },
+
+    restoreEvt() {
+      this.$router.push({name: "properties", params:  {properties: this.properties}});
     },
 
     getFileExtension (filename) {
